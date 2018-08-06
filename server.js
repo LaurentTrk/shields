@@ -207,6 +207,27 @@ loadServiceClasses().forEach(
     cache,
     { handleInternalErrors: config.handleInternalErrors }));
 
+
+// ENO Jenkins
+camp.route(/^\/badges\/jenkins\/status\.(svg|png|gif|jpg|json)$/,    // (2)
+cache(function(data, match, sendBadge, request) {                                // (2)
+  var url = 'http://enovacom-build:8080/';           // (4)
+  var badgeData = getBadgeData('Jenkins', data);                            // (5)
+  request(url, function(err, res, buffer) {                                      // (6)
+    if (checkErrorResponse(badgeData, err, res, 'repo not found')) {             // (7)
+      sendBadge(format, badgeData);                                              // (7)
+      return;                                                                    // (7)
+    }
+    badgeData.text[1] = 'online';                                         // (9)
+    badgeData.colorscheme = 'green';                                          // (9)
+  });
+}));
+
+
+
+
+
+
 // JIRA issue integration
 camp.route(/^\/jira\/issue\/(http(?:s)?)\/(.+)\/([^/]+)\.(svg|png|gif|jpg|json)$/,
 cache(function (data, match, sendBadge, request) {
