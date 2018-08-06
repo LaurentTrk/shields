@@ -211,6 +211,7 @@ loadServiceClasses().forEach(
 // ENO Jenkins
 camp.route(/^\/badges\/jenkins\/status\.(svg|png|gif|jpg|json)$/,    // (2)
 cache(function(data, match, sendBadge, request) {                                // (2)
+  var format = match[1];
   var url = 'http://enovacom-build:8080/';           // (4)
   var badgeData = getBadgeData('Jenkins', data);                            // (5)
   request(url, function(err, res, buffer) {                                      // (6)
